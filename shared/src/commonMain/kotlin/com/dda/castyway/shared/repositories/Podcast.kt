@@ -1,4 +1,4 @@
-package com.dda.castyway
+package com.dda.castyway.shared.repositories
 
 import kotlinx.serialization.Serializable
 

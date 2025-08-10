@@ -1,4 +1,6 @@
-package com.dda.castyway
+package com.dda.castyway.ui.search
+
+import com.dda.castyway.shared.repositories.Podcast
 
 data class SearchState(
     val query: String = "",

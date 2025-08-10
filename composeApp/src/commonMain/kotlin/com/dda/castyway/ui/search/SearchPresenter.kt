@@ -1,5 +1,6 @@
-package com.dda.castyway
+package com.dda.castyway.ui.search
 
+import com.dda.castyway.shared.repositories.PodcastRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,7 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchPresenter(
-    private val podcastService: PodcastService
+    val podcastRepository: PodcastRepository
 ) {
 
     private val _state = MutableStateFlow(SearchState())
@@ -19,7 +20,7 @@ class SearchPresenter(
     fun search(query: String) {
         _state.update { it.copy(query = query, isLoading = true) }
         scope.launch {
-            val podcasts = podcastService.searchPodcasts(query)
+            val podcasts = podcastRepository.searchForPodcastByName(query)
             _state.update {
                 it.copy(
                     podcasts = podcasts,
