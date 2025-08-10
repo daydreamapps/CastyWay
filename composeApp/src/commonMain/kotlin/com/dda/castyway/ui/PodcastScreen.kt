@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.dda.castyway.shared.models.Item
+import com.dda.castyway.shared.models.PodcastEpisode
 
 @Composable
 fun PodcastScreen(viewModel: PodcastViewModel) {
@@ -21,7 +21,7 @@ fun PodcastScreen(viewModel: PodcastViewModel) {
     // and avoid reloading on every recomposition.
     // For this example, we'll load it once.
     // A sample RSS feed url is used here.
-    viewModel.loadPodcastFeed("https://www.omnycontent.com/d/playlist/aaea4e69-af51-495e-afc9-a9760146922b/45a6c38a-799d-4664-881e-a97c01625f93/14bc1229-a538-4308-897b-a97c01625f93/podcast.rss")
+    viewModel.loadPodcastFeed("https://feed.podbean.com/trashfuturepodcast/feed.xml")
 
     Surface(modifier = Modifier.fillMaxSize()) {
         when (val state = uiState) {
@@ -31,7 +31,7 @@ fun PodcastScreen(viewModel: PodcastViewModel) {
                 }
             }
             is PodcastUiState.Success -> {
-                PodcastList(state.feed.channel.items)
+                PodcastList(state.feed.episodes)
             }
             is PodcastUiState.Error -> {
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
@@ -43,7 +43,7 @@ fun PodcastScreen(viewModel: PodcastViewModel) {
 }
 
 @Composable
-fun PodcastList(episodes: List<Item>) {
+fun PodcastList(episodes: List<PodcastEpisode>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
@@ -56,7 +56,7 @@ fun PodcastList(episodes: List<Item>) {
 }
 
 @Composable
-fun EpisodeListItem(episode: Item) {
+fun EpisodeListItem(episode: PodcastEpisode) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
