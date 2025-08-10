@@ -17,8 +17,10 @@ kotlinx-coroutines = "1.10.2"
 ktor = "3.2.2"
 logback = "1.5.18"
 kotlinx-serialization = "1.9.0"
+xmlutil = "0.91.2"
 
 [libraries]
+xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
