@@ -17,8 +17,16 @@ sealed interface PodcastUiState {
     data class Error(val message: String) : PodcastUiState
 }
 
+import com.dda.castyway.shared.network.ListenNotesApi
+import com.dda.castyway.shared.network.createHttpClient
+
 class PodcastViewModel(
-    private val podcastRepository: PodcastRepository = PodcastRepositoryImpl(),
+    private val podcastRepository: PodcastRepository = PodcastRepositoryImpl(
+        listenNotesApi = ListenNotesApi(
+            createHttpClient(),
+            "a00877f74cee47bab5951f9689fe69a2"
+        )
+    ),
     private val downloader: Downloader,
 ) : ViewModel() {
 
