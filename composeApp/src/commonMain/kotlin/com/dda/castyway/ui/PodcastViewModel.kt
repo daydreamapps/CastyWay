@@ -10,6 +10,8 @@ import com.dda.castyway.shared.repositories.PodcastRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.dda.castyway.shared.network.ListenNotesApi
+
 
 sealed interface PodcastUiState {
     data object Loading : PodcastUiState
@@ -18,7 +20,9 @@ sealed interface PodcastUiState {
 }
 
 class PodcastViewModel(
-    private val podcastRepository: PodcastRepository = PodcastRepositoryImpl(),
+    private val podcastRepository: PodcastRepository = PodcastRepositoryImpl(
+        listenNotesApi = ListenNotesApi()
+    ),
     private val downloader: Downloader,
 ) : ViewModel() {
 

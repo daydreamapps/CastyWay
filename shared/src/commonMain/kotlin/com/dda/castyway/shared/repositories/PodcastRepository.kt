@@ -1,7 +1,9 @@
 package com.dda.castyway.shared.repositories
 
+import com.dda.castyway.shared.models.ListenNotesPodcast
 import com.dda.castyway.shared.models.PodcastEpisode
 import com.dda.castyway.shared.models.PodcastFeed
+import com.dda.castyway.shared.network.ListenNotesApi
 import com.prof18.rssparser.RssParser
 import com.prof18.rssparser.model.RssChannel
 import com.prof18.rssparser.model.RssItem
@@ -12,7 +14,10 @@ interface PodcastRepository {
     suspend fun searchForPodcastByName(name: String): List<Podcast>
 }
 
-class PodcastRepositoryImpl(private val rssParser: RssParser = RssParser()) : PodcastRepository {
+class PodcastRepositoryImpl(
+    private val rssParser: RssParser = RssParser(),
+    private val listenNotesApi: ListenNotesApi
+) : PodcastRepository {
 
     override suspend fun getPodcastFeed(url: String): PodcastFeed {
         val rssChannel: RssChannel = rssParser.getRssChannel(url)
@@ -23,12 +28,17 @@ class PodcastRepositoryImpl(private val rssParser: RssParser = RssParser()) : Po
         return if (name.isBlank()) {
             emptyList()
         } else {
-            podcasts.filter { it.title.contains(name, ignoreCase = true) }
+            val response = listenNotesApi.searchPodcasts(name)
+            response.results.map { it.toPodcast() }
         }
     }
+}
 
-    private val podcasts = listOf(
-        Podcast(1, "Trashfuture", "https://feed.podbean.com/trashfuturepodcast/feed.xml"),
+private fun ListenNotesPodcast.toPodcast(): Podcast {
+    return Podcast(
+        id = id.hashCode(),
+        title = title,
+        channelUrl = rss
     )
 }
 
