@@ -46,7 +46,9 @@ fun SearchScreen(presenter: SearchPresenter) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(state.podcasts) { podcast ->
-                        PodcastListItem(podcast)
+                        PodcastListItem(podcast, onDownload = {
+// FIXME                            presenter.downloadEpisode(it)
+                        })
                     }
                 }
             }
@@ -55,12 +57,14 @@ fun SearchScreen(presenter: SearchPresenter) {
 }
 
 @Composable
-fun PodcastListItem(podcast: Podcast) {
+fun PodcastListItem(podcast: Podcast, onDownload: (Podcast) -> Unit) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = podcast.title, style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = podcast.author, style = MaterialTheme.typography.bodySmall)
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(onClick = { onDownload(podcast) }) {
+                Text("Download Episode")
+            }
         }
     }
 }

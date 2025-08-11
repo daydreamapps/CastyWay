@@ -12,6 +12,7 @@ data class PodcastFeed(
 
 @Serializable
 data class PodcastEpisode(
+    val podcastName: String,
     val title: String,
     val pubDate: String,
     val author: String,

@@ -8,6 +8,6 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "CastyWay",
     ) {
-        App()
+        App(PlatformContext())
     }
 }

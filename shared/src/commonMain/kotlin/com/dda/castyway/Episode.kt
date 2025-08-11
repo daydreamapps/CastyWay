@@ -1,10 +1,10 @@
-package com.dda.castyway.shared.repositories
+package com.dda.castyway
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Podcast(
+data class Episode(
     val id: Int,
     val title: String,
-    val channelUrl: String
+    val url: String
 )
