@@ -2,11 +2,16 @@ package com.dda.castyway.shared.network
 
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 
 fun createHttpClient(): HttpClient {
     return HttpClient {
         install(ContentNegotiation) {
-            // We don't register XML because we are decoding it manually.
+            json(Json {
+                ignoreUnknownKeys = true
+                useAlternativeNames = false
+            })
         }
     }
 }
