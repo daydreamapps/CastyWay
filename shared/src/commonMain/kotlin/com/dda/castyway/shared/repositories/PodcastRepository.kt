@@ -28,16 +28,7 @@ class PodcastRepositoryImpl(private val rssParser: RssParser = RssParser()) : Po
     }
 
     private val podcasts = listOf(
-        Podcast(1, "The Joe Rogan Experience", "Joe Rogan"),
-        Podcast(2, "This American Life", "WBEZ Chicago"),
-        Podcast(3, "The Daily", "The New York Times"),
-        Podcast(4, "Stuff You Should Know", "iHeartPodcasts"),
-        Podcast(5, "My Favorite Murder", "Exactly Right"),
-        Podcast(6, "Crime Junkie", "audiochuck"),
-        Podcast(7, "The Ben Shapiro Show", "The Daily Wire"),
-        Podcast(8, "Serial", "Serial Productions"),
-        Podcast(9, "Radiolab", "WNYC Studios"),
-        Podcast(10, "Hidden Brain", "NPR")
+        Podcast(1, "Trashfuture", "https://feed.podbean.com/trashfuturepodcast/feed.xml"),
     )
 }
 
@@ -46,17 +37,21 @@ private fun RssChannel.toPodcastFeed(): PodcastFeed {
         title = title.orEmpty(),
         link = link.orEmpty(),
         description = description.orEmpty(),
-        episodes = items.map(RssItem::toPodcastEpisode),
+        episodes = items.map({ it.toPodcastEpisode(podcastName = title.orEmpty()) }),
     )
 }
 
-private fun RssItem.toPodcastEpisode(): PodcastEpisode {
+private fun RssItem.toPodcastEpisode(podcastName: String): PodcastEpisode {
+    println(this.toString())
     return PodcastEpisode(
+        podcastName = podcastName, // required for file names
         title = title.orEmpty(),
         pubDate = pubDate.orEmpty(),
         author = author.orEmpty(),
         link = link.orEmpty(),
+        contentLink = rawEnclosure?.url,
+        contentSizeBytes = rawEnclosure?.length,
+        contentType = rawEnclosure?.type,
         description = description.orEmpty(),
-        duration = "", // TODO
     )
 }

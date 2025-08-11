@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchPresenter(
-    val podcastRepository: PodcastRepository
+    val podcastRepository: PodcastRepository,
 ) {
 
     private val _state = MutableStateFlow(SearchState())

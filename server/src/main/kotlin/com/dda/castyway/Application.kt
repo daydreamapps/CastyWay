@@ -26,5 +26,16 @@ fun Application.module() {
             val podcasts = PodcastRepository.search(query)
             call.respond(podcasts)
         }
+        get("/podcasts/{id}/episodes") {
+            val podcastId = call.parameters["id"]?.toIntOrNull()
+            if (podcastId == null) {
+                call.respond(emptyList<Episode>())
+                return@get
+            }
+            val episodes = listOf(
+                Episode(1, "Episode 1", "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+            )
+            call.respond(episodes)
+        }
     }
 }
