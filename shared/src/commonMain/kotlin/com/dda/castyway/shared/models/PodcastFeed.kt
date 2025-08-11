@@ -17,6 +17,8 @@ data class PodcastEpisode(
     val pubDate: String,
     val author: String,
     val link: String,
+    val contentLink: String?,
+    val contentSizeBytes: Long?,
+    val contentType: String?,
     val description: String,
-    val duration: String
 )

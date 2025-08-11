@@ -22,13 +22,13 @@ fun App(platformContext: PlatformContext) {
         when (val podcast = selectedPodcast) {
             null -> {
                 val podcastRepository = remember { PodcastRepositoryImpl() }
-                val downloader = remember { Downloader(platformContext) }
-                val presenter = remember { SearchPresenter(podcastRepository = podcastRepository, downloader) }
+                val presenter = remember { SearchPresenter(podcastRepository = podcastRepository) }
                 SearchScreen(presenter, onPodcastSelected = { selectedPodcast = it })
             }
 
             else -> {
-                val podcastViewModel: PodcastViewModel = viewModel { PodcastViewModel() }
+                val downloader = remember { Downloader(platformContext) }
+                val podcastViewModel: PodcastViewModel = viewModel { PodcastViewModel(downloader = downloader) }
                 PodcastScreen(podcastViewModel, podcast)
             }
         }

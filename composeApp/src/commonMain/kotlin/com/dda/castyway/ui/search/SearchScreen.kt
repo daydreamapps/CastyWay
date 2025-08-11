@@ -80,9 +80,6 @@ fun PodcastListItem(podcast: Podcast, onPodcastSelected: (Podcast) -> Unit) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = podcast.title, style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
-//            Button(onClick = { onDownload(podcast) }) {
-//                Text("Download Episode")
-//            }
         }
     }
 }

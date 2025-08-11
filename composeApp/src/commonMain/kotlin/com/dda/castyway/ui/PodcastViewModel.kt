@@ -2,6 +2,8 @@ package com.dda.castyway.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dda.castyway.Downloader
+import com.dda.castyway.shared.models.PodcastEpisode
 import com.dda.castyway.shared.models.PodcastFeed
 import com.dda.castyway.shared.repositories.PodcastRepository
 import com.dda.castyway.shared.repositories.PodcastRepositoryImpl
@@ -16,7 +18,8 @@ sealed interface PodcastUiState {
 }
 
 class PodcastViewModel(
-    private val podcastRepository: PodcastRepository = PodcastRepositoryImpl()
+    private val podcastRepository: PodcastRepository = PodcastRepositoryImpl(),
+    private val downloader: Downloader,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PodcastUiState>(PodcastUiState.Loading)
@@ -32,6 +35,12 @@ class PodcastViewModel(
                 e.printStackTrace()
                 _uiState.value = PodcastUiState.Error(e.message ?: "Unknown error")
             }
+        }
+    }
+
+    fun downloadEpisode(podcastEpisode: PodcastEpisode) {
+        viewModelScope.launch {
+            downloader.downloadFile(podcastEpisode.contentLink!!, "${podcastEpisode.podcastName} - ${podcastEpisode.title}.mp3")
         }
     }
 }

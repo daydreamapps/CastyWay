@@ -42,13 +42,16 @@ private fun RssChannel.toPodcastFeed(): PodcastFeed {
 }
 
 private fun RssItem.toPodcastEpisode(podcastName: String): PodcastEpisode {
+    println(this.toString())
     return PodcastEpisode(
         podcastName = podcastName, // required for file names
         title = title.orEmpty(),
         pubDate = pubDate.orEmpty(),
         author = author.orEmpty(),
         link = link.orEmpty(),
+        contentLink = rawEnclosure?.url,
+        contentSizeBytes = rawEnclosure?.length,
+        contentType = rawEnclosure?.type,
         description = description.orEmpty(),
-        duration = "", // TODO
     )
 }

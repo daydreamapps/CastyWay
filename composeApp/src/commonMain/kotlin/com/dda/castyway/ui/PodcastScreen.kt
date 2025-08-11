@@ -1,5 +1,6 @@
 package com.dda.castyway.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,9 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,7 +52,7 @@ fun PodcastScreen(
             }
 
             is PodcastUiState.Success -> {
-                PodcastList(state.feed.episodes)
+                PodcastList(state.feed.episodes, onDownloadClick = { viewModel.downloadEpisode(it) })
             }
 
             is PodcastUiState.Error -> {
@@ -61,20 +65,20 @@ fun PodcastScreen(
 }
 
 @Composable
-fun PodcastList(episodes: List<PodcastEpisode>) {
+fun PodcastList(episodes: List<PodcastEpisode>, onDownloadClick: (PodcastEpisode) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
         items(episodes) { episode ->
-            EpisodeListItem(episode)
+            EpisodeListItem(episode, onDownloadClick)
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-fun EpisodeListItem(episode: PodcastEpisode) {
+fun EpisodeListItem(episode: PodcastEpisode, onDownloadClick: (PodcastEpisode) -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -84,7 +88,9 @@ fun EpisodeListItem(episode: PodcastEpisode) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = "Published: ${episode.pubDate}", style = MaterialTheme.typography.bodySmall)
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = "Duration: ${episode.duration}", style = MaterialTheme.typography.bodySmall)
+            Icon(imageVector = Icons.Default.Download, contentDescription = "Download", modifier = Modifier.clickable {
+                onDownloadClick(episode)
+            })
         }
     }
 }

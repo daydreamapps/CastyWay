@@ -4,6 +4,7 @@ import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 
 actual class PlatformContext(
     val context: Context,
@@ -12,6 +13,7 @@ actual class PlatformContext(
 actual class Downloader actual constructor(private val context: PlatformContext) {
 
     actual fun downloadFile(url: String, fileName: String) {
+        Log.d("Downloader", "downloading $url")
         val downloadManager = context.context.getSystemService(DownloadManager::class.java)
         val request = DownloadManager.Request(Uri.parse(url))
             .setTitle(fileName)
